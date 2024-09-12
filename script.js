@@ -2,7 +2,6 @@ const showImg = document.getElementById("image_show");
 const message = document.getElementById("result-text");
 // const myCanvas = document.getElementById("myCanvas");
 // const ctx = myCanvas.getContext("2d");
-
 document
   .getElementById("imageInput")
   .addEventListener("change", function (event) {
@@ -18,9 +17,9 @@ document
         showImg.src = "./loading.gif";
         axios({
           method: "POST",
-          url: "https://detect.roboflow.com/garbage-detector-ccn0g/1",
+          url: "https://detect.roboflow.com/jetson-nano-project-2.0/1",
           params: {
-            api_key: "P0IdQ8jZWlbmmKyNSMwg",
+            api_key: "El2aIBbO64HqJR7jdx6K",
           },
           data: base64Image,
           headers: {
@@ -31,36 +30,13 @@ document
             showImg.src = base64Image;
 
             const data = response.data;
-            // myCanvas.height = 0;
-            // myCanvas.width = 0;
-            if (data.predictions.length > 0) {
-              // myCanvas.height = data.image.height;
-              // myCanvas.width = data.image.width;
-              // for (let i = 0; i < data.predictions.length; i++) {
-              //   showImg.onload = function () {
-              //     ctx.drawImage(
-              //       showImg,
-              //       0,
-              //       0,
-              //       data.image.width,
-              //       data.image.height
-              //     );
-              //     // Draw a red rectangle over the image
-              //     ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-              //     ctx.fillRect(
-              //       data.predictions[i].x,
-              //       data.predictions[i].y,
-              //       100,
-              //       100
-              // );
-              // };
-              // }
 
-              message.style.color = "red";
-              message.innerText = "Not Cleaned";
+            if (data.predictions.length > 0) {
+              // Extract class names and join them with commas
+              const classList = data.predictions.map(prediction => prediction.class).join(', ');
+              message.innerText = classList; // Display the classes in the result-text element
             } else {
-              message.style.color = "green";
-              message.innerText = "Cleaned";
+              message.innerText = "No predictions found";
             }
             console.log(data);
           })
